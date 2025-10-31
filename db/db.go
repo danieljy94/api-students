@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/danieljy94/api-students/db"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -47,7 +46,7 @@ func AddStudent(student Student) error {
 func GetStudents() ([]Student, error) {
 	students := []Student{}
 
-	db.Init()
+	db := Init()
 	err := db.Find(&students).Error
 	return students, err
 }
