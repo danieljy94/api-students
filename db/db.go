@@ -1,60 +1,10 @@
 package db
 
-/*
- import (
-	"fmt"
-	"log"
-
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
-)
-
-type Student struct {
-	gorm.Model
-	Name   string
-	CPF    int
-	Email  string
-	Age    int
-	Active bool
-}
-
-// Documentação GORM
-func Init() *gorm.DB {
-	db, err := gorm.Open(sqlite.Open("student.db"), &gorm.Config{})
-
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	db.AutoMigrate(&Student{})
-
-	return db
-}
-
-// Adicionar um estudante
-func AddStudent() {
-	db := Init()
-	student := Student{
-		Name:   "Daniel",
-		CPF:    12345678910,
-		Email:  "daniel.jy94@gmail.com",
-		Age:    31,
-		Active: true,
-	}
-
-	// Resultado da criação do estudante
-	if result := db.Create(&student); result.Error != nil {
-		fmt.Println("Error to create a student")
-	}
-
-	fmt.Println("Student created!")
-}
-*/
-
 import (
 	"fmt"
 	"log"
 
+	"github.com/danieljy94/api-students/db"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -82,20 +32,22 @@ func Init() *gorm.DB {
 	return db
 }
 
-func AddStudent() {
+func AddStudent(student Student) error {
 	db := Init()
-	student := Student{
-		Name:   "Daniel",
-		CPF:    12345678910,
-		Email:  "daniel.jy94@gmail.com",
-		Age:    31,
-		Active: true,
-	}
 
 	// Resultado da criação do estudante
 	if result := db.Create(&student); result.Error != nil {
-		fmt.Println("Error to create a student")
+		return result.Error
 	}
 
 	fmt.Println("Student created!")
+	return nil
+}
+
+func GetStudents() ([]Student, error) {
+	students := []Student{}
+
+	db.Init()
+	err := db.Find(&students).Error
+	return students, err
 }
